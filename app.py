@@ -123,17 +123,24 @@ def precos_por_loja(dados, meio):
     col_roma, col_conc, _ = MEIOS[meio]
 
     roma = (dados.groupby(["item", "pneu"], as_index=False)
-            .agg(preco=(col_roma, "first"), parcelas=("roma_n_parcelas", "first")))
+            .agg(preco=(col_roma, "first"), parcelas=("roma_n_parcelas", "first"),
+                 disponivel=("roma_disponivel", "first")))
     roma["loja"] = "Roma"
 
-    conc = dados[["item", "pneu", "concorrente", col_conc, "conc_n_parcelas"]].rename(
-        columns={"concorrente": "loja", col_conc: "preco", "conc_n_parcelas": "parcelas"})
+    conc = dados[["item", "pneu", "concorrente", col_conc, "conc_n_parcelas", "conc_disponivel"]].rename(
+        columns={"concorrente": "loja", col_conc: "preco", "conc_n_parcelas": "parcelas",
+                 "conc_disponivel": "disponivel"})
 
     longa = pd.concat([roma, conc], ignore_index=True)
     longa["rotulo"] = longa["preco"].map(formatar_real)
+    # Sem preço: "Sem estoque" só quando o site disse isso; senão a coleta falhou
+    sem_preco = longa["preco"].isna()
+    longa.loc[sem_preco, "rotulo"] = longa.loc[sem_preco, "disponivel"].map(
+        lambda d: {"nao": "Sem estoque", "alternativo": "Produto diferente"}.get(d, "Não coletado"))
     if meio == "Valor da parcela":
         longa["rotulo"] = longa.apply(
-            lambda l: l["rotulo"] if pd.isna(l["parcelas"]) else f"{l['rotulo']} ({int(l['parcelas'])}x)",
+            lambda l: l["rotulo"] if pd.isna(l["parcelas"]) or pd.isna(l["preco"])
+            else f"{l['rotulo']} ({int(l['parcelas'])}x)",
             axis=1)
     return longa
 
@@ -170,6 +177,11 @@ if not os.path.exists(ARQUIVO_BASE):
 marca_tempo = os.path.getmtime(ARQUIVO_BASE)
 base = carregar_base(marca_tempo)
 st.sidebar.markdown(f"Última coleta: **{base['data_coleta'].iloc[0]}**")
+falhas = base[base["conc_disponivel"].isna()]
+if not falhas.empty:
+    st.sidebar.error(f"⚠️ {len(falhas)} preço(s) não coletado(s) na última coleta: "
+                     + "; ".join(f"{l['concorrente']} · {l['medida']} {l['modelo']}" for _, l in falhas.iterrows())
+                     + ". Rode a coleta de novo.")
 
 if "roma_fonte_preco" in base.columns and (base["roma_fonte_preco"] == "planilha").any():
     qtd = base.loc[base["roma_fonte_preco"] == "planilha", "item"].nunique()
@@ -186,10 +198,11 @@ concorrentes = st.sidebar.multiselect(
     default=sorted(base["concorrente"].unique()),
 )
 incluir_alternativos = st.sidebar.checkbox(
-    "Incluir produto alternativo (EV)",
+    "Incluir produto alternativo",
     value=False,
-    help="O EfficientGrip Performance 195/55R16 é comparado com a versão EV na Pneu Store. "
-         "Como são produtos diferentes, fica fora por padrão.",
+    help="Quando o concorrente não vende o mesmo pneu da Roma, comparamos com o modelo equivalente "
+         "(ex.: Cargo Marathon 3 no lugar do Cargo Marathon 2 na Achei Pneus). "
+         "Como são produtos diferentes, fica fora das médias por padrão.",
 )
 
 base = base[base["concorrente"].isin(concorrentes)].copy()
@@ -203,6 +216,7 @@ if not incluir_alternativos:
     for col in ["conc_preco_pix", "conc_preco_parcelado", "conc_valor_parcela",
                 "dif_pix_pct", "dif_parcelado_pct", "dif_parcela_pct"]:
         base.loc[alternativo, col] = float("nan")
+    base.loc[alternativo, "conc_disponivel"] = "alternativo"
 
 with st.expander("ℹ️ Como ler este painel"):
     st.markdown("""
@@ -275,7 +289,8 @@ def painel(dados, chave):
         altura = max(420, 95 * len(ordem_pneus))
         st.plotly_chart(estilo_grafico(fig, altura), use_container_width=True,
                         key=f"preco_{chave}")
-        st.caption("Barras sem valor = concorrente sem estoque (o site não mostra preço).")
+        st.caption("Barra faltando = sem preço nesta coleta. A tabela abaixo mostra o motivo: "
+                   "**Sem estoque** (o site avisou) ou **Não coletado** (o site não respondeu; rode a coleta de novo).")
     else:
         grafico = dados[dados[col_dif].notna()].copy()
         grafico["rotulo"] = grafico[col_dif].map(formatar_pct)
@@ -309,7 +324,7 @@ def painel(dados, chave):
     longa = longa.drop_duplicates(["item", "pneu", "loja"]).set_index(["item", "pneu", "loja"])
     numeros = longa["preco"].unstack("loja").reindex(columns=lojas)
     rotulos = longa["rotulo"].unstack("loja").reindex(columns=lojas)
-    rotulos = rotulos.where(numeros.notna(), "Sem estoque")
+    rotulos = rotulos.fillna("Não coletado")
 
     difs = (dados.drop_duplicates(["item", "pneu", "concorrente"])
             .set_index(["item", "pneu", "concorrente"])[col_dif].unstack("concorrente"))

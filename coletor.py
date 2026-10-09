@@ -79,18 +79,30 @@ def extrair_pneustore(url):
     """Recebe a URL de um produto da Pneu Store e devolve disponibilidade e preços."""
     resultado = resultado_vazio()
 
-    # 1. Baixa a página imitando o Chrome (se falhar, pula este pneu)
-    try:
-        resposta = requests.get(url, impersonate="chrome", timeout=20)
-    except Exception as erro:
-        print("   Falha ao acessar a Pneu Store:", erro)
-        return resultado
+    # 1. Baixa a página imitando o Chrome. Até 3 tentativas: às vezes o site
+    #    demora, bloqueia por alguns segundos ou devolve a página incompleta.
+    soup = None
+    for tentativa in range(1, 4):
+        try:
+            resposta = requests.get(url, impersonate="chrome", timeout=20)
+            if resposta.status_code == 200:
+                pagina = BeautifulSoup(resposta.text, "html.parser")
+                tem_preco = pagina.select_one("div[class*='product_in_cash'] h2") is not None
+                sem_estoque = "sem estoque" in pagina.get_text(" ", strip=True).lower()
+                if tem_preco or sem_estoque:
+                    soup = pagina
+                    break
+                motivo = "página veio sem preço e sem aviso de estoque"
+            else:
+                motivo = f"código {resposta.status_code}"
+        except Exception as erro:
+            motivo = str(erro)[:80]
+        print(f"   Pneu Store, tentativa {tentativa} falhou ({motivo})")
+        time.sleep(5 * tentativa)
 
-    if resposta.status_code != 200:
-        print("   Pneu Store bloqueou ou deu erro:", resposta.status_code)
+    if soup is None:
+        print("   Pneu Store: não foi possível ler este pneu. Ele fica como 'Não coletado'.")
         return resultado
-
-    soup = BeautifulSoup(resposta.text, "html.parser")
 
     # 2. Nome do anúncio (o título principal da página)
     titulo = soup.select_one("h1")
@@ -318,13 +330,17 @@ def situacao_estoque(linha):
 
 def montar_base(coletado, produtos, roma):
     """Junta a coleta com os dados da Roma e calcula as comparações."""
-    dados_roma = produtos[["item", "sku_roma", "equivalencia_pneustore"]].merge(roma, on="item")
+    # Equivalência por loja: "mesmo produto" ou "alternativo (...)"
+    for coluna in ["equivalencia_pneustore", "equivalencia_acheipneus"]:
+        if coluna not in produtos.columns:
+            produtos[coluna] = "mesmo produto"
+        produtos[coluna] = produtos[coluna].fillna("mesmo produto")
+    dados_roma = (produtos[["item", "sku_roma", "equivalencia_pneustore", "equivalencia_acheipneus"]]
+                  .merge(roma, on="item"))
     base = coletado.merge(dados_roma, on="item", how="left")
-
-    # Equivalência: na Achei Pneus todos são o mesmo produto
     base["equivalencia"] = base["equivalencia_pneustore"].where(
-        base["concorrente"] == "PneuStore", "mesmo produto")
-    base = base.drop(columns="equivalencia_pneustore")
+        base["concorrente"] == "PneuStore", base["equivalencia_acheipneus"])
+    base = base.drop(columns=["equivalencia_pneustore", "equivalencia_acheipneus"])
 
     # Preços da Roma a partir do preço cheio
     base["roma_preco_pix"] = (base["roma_preco_cheio"] * (1 - DESCONTO_ROMA)).round(2)
