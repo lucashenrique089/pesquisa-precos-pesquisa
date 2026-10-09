@@ -1,26 +1,41 @@
-MONITOR DE PREÇOS DA CONCORRÊNCIA | Roma Pneus
-===============================================
+MONITOR DE PREÇOS E CAMPANHAS DA CONCORRÊNCIA | Roma Pneus
+=============================================================
 
-ARQUIVOS
-- app.py                    -> painel no Streamlit (abas: Mais vendidos, Mais pesquisados, Histórico, Promoções)
-- coletor.py                -> busca os preços na Roma, Pneu Store e Achei Pneus e detecta promoções
-- produtos_monitorados.csv  -> lista dos 14 pneus, links e preço cheio da Roma (edite aqui)
+ARQUIVOS DO PROJETO
+- app.py                    -> painel no Streamlit (7 abas, veja abaixo)
+- coletor.py                -> coleta tudo: preços, parcelas, estoque, promoções e campanhas
+- campanhas.py              -> lê banners da Pneu Store e campanhas da Achei Pneus (usado pelo coletor)
+- ideias.py                 -> regras de ideias de estratégia e Black Friday
+                               (edite ALAVANCAS_ROMA com o que a Roma pode usar de verdade)
+- produtos_monitorados.csv  -> lista dos 14 pneus, links e preço cheio da Roma
 - requirements.txt          -> bibliotecas necessárias
 - .streamlit/config.toml    -> tema claro com texto preto (manter a pasta .streamlit com o ponto)
+
+ABAS DO PAINEL
+- 🏆 Mais vendidos e 🔎 Mais pesquisados -> preços Roma x concorrentes (PIX, parcelado, parcela)
+- 📈 Histórico de preços                 -> evolução do preço de cada pneu
+- 📣 Promoções                           -> descontos fora do normal, quem baixou/subiu preço, e-mail
+- 📢 Radar de campanhas                  -> banners e campanhas dos concorrentes, novas e encerradas
+- 🖤 Black Friday                        -> contagem regressiva, campanhas BF, movimento de preços,
+                                            alerta de preço maquiado e plano da Roma
+- 💡 Ideias                              -> sugestões de ação por prioridade
 
 PRIMEIRA VEZ (no terminal do VS Code, dentro da pasta)
   python -m pip install -r requirements.txt
 
-ATUALIZAR OS PREÇOS
-  Rodar o coletor.py (botão ▶️ no VS Code) ou clicar em "Atualizar preços" no app.
-  São criados/atualizados:
-    base_concorrencia.xlsx    -> foto atual (o app lê este arquivo)
-    historico_precos.csv      -> todas as coletas
+ATUALIZAR TUDO
+  Rodar o coletor.py (botão ▶️ no VS Code) ou clicar em "🔄 Atualizar tudo" no app.
+  Uma coleta atualiza TODAS as abas. São criados/atualizados:
+    base_concorrencia.xlsx    -> foto atual dos preços (o app lê este arquivo)
+    historico_precos.csv      -> todas as coletas de preço
     historico_promocoes.csv   -> promoções e mudanças de preço detectadas
+    campanhas_atuais.csv      -> campanhas no ar hoje
+    historico_campanhas.csv   -> todas as coletas de campanhas
 
 ABRIR O APP NO COMPUTADOR
   python -m streamlit run app.py
 
-STREAMLIT CLOUD
-  Subir no GitHub todos os arquivos acima, incluindo os três gerados pelo coletor,
-  para o app na nuvem mostrar os dados e manter o histórico.
+STREAMLIT CLOUD (GitHub)
+  Rodar o coletor no computador e subir no GitHub todos os arquivos, inclusive os 5 gerados
+  pelo coletor. Sem eles o app na nuvem abre vazio e os históricos se perdem.
+  Dica: coletar todos os dias até a Black Friday para o gráfico de movimento de preços.

@@ -12,6 +12,7 @@ O que faz:
        - base_concorrencia.xlsx  -> a "foto" atual, que o app do Streamlit lê
        - historico_precos.csv    -> acumula todas as coletas (para ver a evolução)
        - historico_promocoes.csv -> promoções e mudanças de preço detectadas em cada coleta
+       - campanhas_atuais.csv e historico_campanhas.csv -> banners e campanhas (campanhas.py)
 
 Como usar:
   No VS Code, clique em ▶️ com este arquivo aberto, ou use o botão
@@ -507,13 +508,21 @@ def coletar():
     salvar(base)
     sinais = registrar_promocoes(base)
 
+    # Campanhas dos concorrentes (banners e categorias de campanha)
+    try:
+        from campanhas import coletar_campanhas
+        _, mudancas_campanhas = coletar_campanhas(base["data_coleta"].iloc[0], produtos)
+    except Exception as erro:
+        print("Campanhas: falha na coleta, preços salvos normalmente |", erro)
+        mudancas_campanhas = pd.DataFrame(columns=["concorrente", "campanha", "tipo", "mudanca"])
+
     sem_preco = base[(base["conc_disponivel"] == "sim") & base["conc_preco_pix"].isna()]
     print()
     print(f"Pronto! {len(base)} comparações salvas em {ARQUIVO_BASE}")
     if not sem_preco.empty:
         print("Atenção, disponível mas sem preço (conferir o site):")
         print(sem_preco[["item", "concorrente", "medida", "modelo"]].to_string(index=False))
-    return base, sinais
+    return base, sinais, mudancas_campanhas
 
 
 if __name__ == "__main__":
