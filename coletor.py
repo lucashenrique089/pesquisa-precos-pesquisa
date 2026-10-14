@@ -13,6 +13,7 @@ O que faz:
        - historico_precos.csv    -> acumula todas as coletas (para ver a evolução)
        - historico_promocoes.csv -> promoções e mudanças de preço detectadas em cada coleta
        - campanhas_atuais.csv e historico_campanhas.csv -> banners e campanhas (campanhas.py)
+       - parcelas_atuais.csv e historico_parcelas.csv -> tabela de 1x a 12x (parcelas.py)
 
 Como usar:
   No VS Code, clique em ▶️ com este arquivo aberto, ou use o botão
@@ -277,9 +278,18 @@ def roma_por_html(url):
     if preco is None:
         return None
 
-    texto = soup.get_text(" ", strip=True).lower()
-    disponivel = "nao" if ("fora de estoque" in texto or "sem estoque" in texto) else "sim"
-    return {"preco": preco, "disponivel": disponivel}
+    # Estoque: o Magento marca o bloco de disponibilidade com as classes
+    # "stock available" (tem) ou "stock unavailable" (não tem). Se não achar, lê o texto do bloco.
+    bloco_estoque = soup.select_one(".product-info-main .stock, .product-info-stock-sku .stock, div.stock")
+    if bloco_estoque is not None:
+        classes = " ".join(bloco_estoque.get("class", []))
+        texto_estoque = bloco_estoque.get_text(" ", strip=True).lower()
+        sem = "unavailable" in classes or "fora de estoque" in texto_estoque or "sem estoque" in texto_estoque
+    else:
+        principal = soup.select_one(".product-info-main") or soup
+        texto = principal.get_text(" ", strip=True).lower()
+        sem = "fora de estoque" in texto or "sem estoque" in texto
+    return {"preco": preco, "disponivel": "nao" if sem else "sim"}
 
 
 def extrair_roma(produto):
@@ -524,6 +534,13 @@ def coletar():
     salvar(base)
     sinais = registrar_promocoes(base)
 
+    # Parcelamento de 1x a 12x nas três lojas
+    try:
+        from parcelas import coletar_parcelas
+        coletar_parcelas(base, produtos)
+    except Exception as erro:
+        print("Parcelamento: falha na coleta, preços salvos normalmente |", erro)
+
     # Campanhas dos concorrentes (banners e categorias de campanha)
     try:
         from campanhas import coletar_campanhas
@@ -531,6 +548,20 @@ def coletar():
     except Exception as erro:
         print("Campanhas: falha na coleta, preços salvos normalmente |", erro)
         mudancas_campanhas = pd.DataFrame(columns=["concorrente", "campanha", "tipo", "mudanca"])
+
+    # Vendas faturadas: lê o seu Excel de controle (sem nomes de clientes) e salva vendas.csv
+    try:
+        from vendas import coletar_vendas
+        coletar_vendas()
+    except Exception as erro:
+        print("Vendas: falha na leitura do Excel, preços salvos normalmente |", erro)
+
+    # Dados do site da Roma no GA4 (usuários, páginas, buscas, itens). Precisa da chave em C:\chaves
+    try:
+        from ga4 import coletar_ga4
+        coletar_ga4()
+    except Exception as erro:
+        print("GA4: falha na leitura, preços salvos normalmente |", erro)
 
     sem_preco = base[(base["conc_disponivel"] == "sim") & base["conc_preco_pix"].isna()]
     print()

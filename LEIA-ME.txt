@@ -2,26 +2,36 @@ MONITOR DE PREÇOS E CAMPANHAS DA CONCORRÊNCIA | Roma Pneus
 =============================================================
 
 ARQUIVOS DO PROJETO
-- app.py                    -> painel no Streamlit (7 abas, veja abaixo)
-- coletor.py                -> coleta tudo: preços, parcelas, estoque, promoções e campanhas
+- app.py                    -> painel no Streamlit (9 abas, veja abaixo)
+- coletor.py                -> coleta tudo: preços, parcelas, estoque, promoções, campanhas e GA4
 - campanhas.py              -> lê banners da Pneu Store e campanhas da Achei Pneus (usado pelo coletor)
-- ideias.py                 -> regras de ideias de estratégia e Black Friday
-                               (edite ALAVANCAS_ROMA com o que a Roma pode usar de verdade)
+- parcelas.py               -> tabela de 1x a 12x da Roma, Pneu Store e Achei Pneus
+                               (se a Pneu Store atualizar o site, veja as instruções no topo do arquivo)
+- ideias.py                 -> ideias de estratégia, biblioteca de pilotos e Black Friday
+- ga4.py                    -> lê o GA4 do site da Roma (usuários, páginas, buscas, itens)
+- teste_ga4.py              -> teste rápido da conexão com o GA4
+- diagnostico.py            -> testa cada fonte de dados com 1 pneu e mostra ✅ ou ❌
 - produtos_monitorados.csv  -> lista dos 14 pneus, links e preço cheio da Roma
 - requirements.txt          -> bibliotecas necessárias
+- .gitignore                -> impede que arquivos .json (a chave do GA4) subam para o GitHub
 - .streamlit/config.toml    -> tema claro com texto preto (manter a pasta .streamlit com o ponto)
 
 ABAS DO PAINEL
 - 🏆 Mais vendidos e 🔎 Mais pesquisados -> preços Roma x concorrentes (PIX, parcelado, parcela)
+- 💳 Simulador de parcelas               -> total e parcela de 1x a 12x, para 1, 2 ou 4 pneus
+- 📊 Site (GA4)                         -> usuários agora, 7/30 dias x anterior, dia a dia, hora a hora
+                                            (hoje x ontem), canais/origem/campanha, páginas, buscas no
+                                            site e funil de cada pneu cruzado com a posição de preço
 - 📈 Histórico de preços                 -> evolução do preço de cada pneu
 - 📣 Promoções                           -> descontos fora do normal, quem baixou/subiu preço, e-mail
 - 📢 Radar de campanhas                  -> banners e campanhas dos concorrentes, novas e encerradas
 - 🖤 Black Friday                        -> contagem regressiva, campanhas BF, movimento de preços,
                                             alerta de preço maquiado e plano da Roma
-- 💡 Ideias                              -> sugestões de ação por prioridade
+- 💡 Ideias                              -> sugestões de ação, biblioteca de pilotos do mercado e e-mail
 
 PRIMEIRA VEZ (no terminal do VS Code, dentro da pasta)
   python -m pip install -r requirements.txt
+  python diagnostico.py      (confere se Roma, Pneu Store e Achei Pneus estão respondendo)
 
 ATUALIZAR TUDO
   Rodar o coletor.py (botão ▶️ no VS Code) ou clicar em "🔄 Atualizar tudo" no app.
@@ -31,11 +41,41 @@ ATUALIZAR TUDO
     historico_promocoes.csv   -> promoções e mudanças de preço detectadas
     campanhas_atuais.csv      -> campanhas no ar hoje
     historico_campanhas.csv   -> todas as coletas de campanhas
+    parcelas_atuais.csv       -> tabela de 1x a 12x de hoje
+    historico_parcelas.csv    -> todas as coletas de parcelamento
+    ga4_resumo.csv, ga4_diario.csv, ga4_horario.csv, ga4_aquisicao.csv,
+    ga4_paginas.csv, ga4_buscas.csv, ga4_itens.csv  -> dados do site (GA4)
 
 ABRIR O APP NO COMPUTADOR
   python -m streamlit run app.py
 
 STREAMLIT CLOUD (GitHub)
-  Rodar o coletor no computador e subir no GitHub todos os arquivos, inclusive os 5 gerados
+  Rodar o coletor no computador e subir no GitHub todos os arquivos, inclusive os 14 gerados (7 de preços + 7 ga4_*.csv)
   pelo coletor. Sem eles o app na nuvem abre vazio e os históricos se perdem.
   Dica: coletar todos os dias até a Black Friday para o gráfico de movimento de preços.
+
+GA4: A CHAVE DO ROBÔ (regra de segurança)
+  - O arquivo .json da chave fica SÓ em C:\chaves. Nunca na pasta do projeto, nunca no GitHub,
+    nunca enviado para ninguém. O .gitignore bloqueia qualquer .json por garantia.
+  - O robô tem acesso de Leitor no GA4 (só lê, não altera nada).
+  - Se a chave vazar: Google Cloud > IAM > Contas de serviço > Chaves > excluir e criar outra.
+
+GA4 AO VIVO NO STREAMLIT CLOUD (opcional, para o botão "🔄 Atualizar GA4 agora" e o "usuários agora")
+  Sem isso, a aba GA4 na nuvem mostra os dados da última coleta (os ga4_*.csv do GitHub).
+  1. No site do Streamlit Cloud: seu app > ⋮ > Settings > Secrets
+  2. Colar o bloco abaixo, copiando cada valor do arquivo .json (abrir no Bloco de Notas):
+
+     [gcp_service_account]
+     type = "service_account"
+     project_id = "..."
+     private_key_id = "..."
+     private_key = "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+     client_email = "...@....iam.gserviceaccount.com"
+     client_id = "..."
+     auth_uri = "https://accounts.google.com/o/oauth2/auth"
+     token_uri = "https://oauth2.googleapis.com/token"
+     auth_provider_x509_cert_url = "https://www.googleapis.com/oauth2/v1/certs"
+     client_x509_cert_url = "..."
+
+  3. Save. O Secrets fica guardado só no Streamlit, não vai para o GitHub.
+  A private_key deve ser colada exatamente como está no .json (com os \n), entre aspas.

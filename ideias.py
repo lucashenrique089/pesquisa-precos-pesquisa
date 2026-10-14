@@ -27,6 +27,7 @@ ALAVANCAS_ROMA = [
 ]
 
 DESCONTO_PIX_ROMA = 0.06
+CUPOM_ROMA5 = 0.05            # cupom de primeira compra (em cascata sobre os 6%)
 PARCELAS_ROMA = 6
 LIMITE_CARO = 0.05
 
@@ -47,7 +48,7 @@ def nome_pneu(df):
 # IDEIAS DE ESTRATÉGIA
 # ============================================================
 
-def gerar_ideias(base, campanhas):
+def gerar_ideias(base, campanhas, parcelas=None):
     """Devolve uma tabela de ideias: prioridade, alavanca, ideia, motivo (dados) e ação."""
     ideias = []
     base = base.copy()
@@ -75,15 +76,50 @@ def gerar_ideias(base, campanhas):
               + ", ".join(pesq["pneu"].unique()) + ".",
               "Testar preço de PIX mais agressivo por 15 dias nessas medidas e medir a conversão no GA4.")
 
-    # 3. Diferença de parcelamento
-    parc_conc = base["conc_n_parcelas"].dropna()
-    if not parc_conc.empty and parc_conc.max() > PARCELAS_ROMA:
-        maior = int(parc_conc.max())
-        acima_600 = base[base["roma_preco_cheio"] >= 600]["pneu"].nunique()
-        ideia("Média", "Parcelamento", f"Concorrentes parcelam em até {maior}x, a Roma em {PARCELAS_ROMA}x",
-              f"Mesmo quando a Roma é mais barata no total, a parcela fica maior. "
-              f"{acima_600} pneu(s) monitorado(s) custam R$ 600 ou mais, onde a parcela pesa na decisão.",
-              f"Avaliar {maior}x sem juros (ou 10x) para pedidos acima de R$ 1.200, típico de kit com 4 pneus.")
+    # 3. Parcelamento: jogo de 4 pneus, parcela da Roma (6x) x melhor parcela sem juros do concorrente
+    if parcelas is not None and not parcelas.empty:
+        sem_juros = parcelas[(parcelas["juros"] == False) & (parcelas["loja"] != "Roma")]
+        maior_conc = sem_juros.groupby(["item", "loja"])["parcelas"].max()
+        conc = sem_juros.merge(maior_conc.rename("max_sem_juros").reset_index(), on=["item", "loja"])
+        conc = conc[conc["parcelas"] == conc["max_sem_juros"]]
+        melhor = conc.sort_values("valor_parcela").drop_duplicates("item")
+        roma6 = parcelas[(parcelas["loja"] == "Roma") & (parcelas["parcelas"] == PARCELAS_ROMA)]
+        comp = roma6.merge(melhor[["item", "loja", "parcelas", "valor_parcela"]], on="item",
+                           suffixes=("_roma", "_conc"))
+        if not comp.empty:
+            comp["dif_jogo"] = (comp["valor_parcela_roma"] - comp["valor_parcela_conc"]) * 4
+            media = comp["dif_jogo"].mean()
+            exemplo = comp.sort_values("dif_jogo", ascending=False).iloc[0]
+            ideia("Média", "Parcelamento",
+                  f"Parcela do jogo de 4 pneus fica {formatar_real(media)[:-3]} maior na Roma",
+                  f"Na média dos pneus monitorados, o jogo de 4 na Roma (6x) tem parcela {formatar_real(media)} "
+                  f"maior que a menor parcela sem juros dos concorrentes. Exemplo: {exemplo['medida']} {exemplo['modelo']}, "
+                  f"Roma 6x de {formatar_real(exemplo['valor_parcela_roma'] * 4)} contra {exemplo['loja_conc']} "
+                  f"{int(exemplo['parcelas_conc'])}x de {formatar_real(exemplo['valor_parcela_conc'] * 4)}.",
+                  "Avaliar 10x sem juros para compras de 4 pneus (ou acima de R$ 1.200) e destacar o valor da parcela "
+                  "do jogo completo na página do produto.")
+    else:
+        parc_conc = base["conc_n_parcelas"].dropna()
+        if not parc_conc.empty and parc_conc.max() > PARCELAS_ROMA:
+            maior = int(parc_conc.max())
+            ideia("Média", "Parcelamento", f"Concorrentes parcelam em até {maior}x, a Roma em {PARCELAS_ROMA}x",
+                  "Mesmo quando a Roma é mais barata no total, a parcela fica maior.",
+                  f"Avaliar {maior}x sem juros para pedidos acima de R$ 1.200, típico de kit com 4 pneus.")
+
+    # 3b. Cupom ROMA5 na recompra
+    pix_conc = base.dropna(subset=["conc_preco_pix"]).groupby("item")["conc_preco_pix"].min()
+    roma_pix = base.groupby("item")["roma_preco_pix"].first()
+    comuns = pix_conc.index.intersection(roma_pix.index)
+    if len(comuns):
+        com_cupom = roma_pix[comuns] * (1 - CUPOM_ROMA5)
+        hoje = (roma_pix[comuns] <= pix_conc[comuns]).sum()
+        com = (com_cupom <= pix_conc[comuns]).sum()
+        ideia("Média", "Cupom de desconto", "Liberar o ROMA5 também na recompra",
+              f"Hoje o ROMA5 (5% em cascata sobre os 6%) vale só na primeira compra. No mercado de pneus o cliente "
+              f"costuma comprar 2 pneus e voltar meses depois para os outros 2. Com o cupom, a Roma fica abaixo do "
+              f"menor PIX dos concorrentes em {com} de {len(comuns)} pneus monitorados (sem o cupom, em {hoje}).",
+              "Testar o ROMA5 (ou um cupom de recompra) enviado por e-mail na Brevo 3 a 6 meses depois da compra "
+              "de 2 pneus, para fechar o jogo completo na Roma.")
 
     # 4. Só a Roma tem o pneu
     so_roma = base[(base["roma_disponivel"] == "sim") & (base["conc_disponivel"] == "nao")]
@@ -125,6 +161,14 @@ def gerar_ideias(base, campanhas):
             nomes = "; ".join(f"{c['concorrente']}: {c['titulo']}" for _, c in achadas.head(4).iterrows())
             ideia(prio, alavanca, titulo, f"Campanha(s) ativa(s): {nomes}.", acao)
 
+    # 10b. Retirada grátis na loja: argumento para os pneus em que a Roma está empatada ou um pouco acima
+    empatados = base[(base["dif_pix_pct"] > -LIMITE_CARO) & (base["dif_pix_pct"] <= 0.10)]
+    if not empatados.empty:
+        ideia("Média", "Mídia e destaque no site", "Usar a retirada grátis em loja como argumento",
+              f"Em {empatados['pneu'].nunique()} pneu(s) a Roma está empatada ou até 10% acima no PIX. "
+              "Nesses casos, retirar grátis em 3 dias úteis pode compensar a diferença sem mexer no preço.",
+              "Colocar o selo 'Retire grátis em 3 dias úteis' na página desses pneus e nos anúncios.")
+
     # 11. Kit: sempre útil quando a Roma é competitiva
     competitivos = base[base["classificacao_pix"] == "Competitivo"]["pneu"].nunique()
     if competitivos:
@@ -137,6 +181,71 @@ def gerar_ideias(base, campanhas):
     ordem = {"Alta": 0, "Média": 1, "Baixa": 2}
     return tabela.sort_values("prioridade", key=lambda s: s.map(ordem)).reset_index(drop=True)
 
+
+
+# ============================================================
+# BIBLIOTECA DE IDEIAS DO MERCADO
+# ============================================================
+# Ações comuns no e-commerce de pneus, cada uma já no formato de PILOTO:
+# pequena, com prazo, custo limitado e forma de medir. Proposta pequena e
+# mensurável é mais fácil de aprovar do que mudança de política.
+
+IDEIAS_MERCADO = [
+    {"titulo": "Cupom de recompra (fechar o jogo de 4)",
+     "como_funciona": "Cupom enviado a quem comprou 2 pneus, para comprar os outros 2 depois.",
+     "no_mercado": "Comum em lojas que trabalham com base de clientes e régua de e-mail.",
+     "piloto": "ROMA5 liberado para recompra só para quem comprou 2 pneus nos últimos 6 meses, por 60 dias, via Brevo.",
+     "custo": "Até 5% sobre o pedido de recompra, só em vendas que acontecerem.",
+     "medir": "Taxa de recompra e receita dos clientes que receberam o cupom x período anterior."},
+    {"titulo": "Frete grátis em campanha específica",
+     "como_funciona": "Frete grátis só para um recorte: categoria, kit, região ou período.",
+     "no_mercado": "A Pneu Store usa frete grátis por categoria (moto, carga) e em itens selecionados.",
+     "piloto": "Frete grátis só para kit de 4 pneus dos 10 mais vendidos, por 15 dias.",
+     "custo": "Frete médio x número de kits vendidos (limitado ao prazo do teste).",
+     "medir": "Vendas de kits de 4 durante o teste x mesmo período anterior."},
+    {"titulo": "Retirada grátis na loja em destaque",
+     "como_funciona": "Transformar a retirada grátis em 3 dias úteis em argumento de venda.",
+     "no_mercado": "Lojas com ponto físico destacam retirada e montagem no próprio local.",
+     "piloto": "Selo 'Retire grátis em 3 dias úteis' na página dos 14 pneus monitorados e nos anúncios, por 30 dias.",
+     "custo": "Praticamente zero (só ajuste de layout e anúncio).",
+     "medir": "Conversão das páginas com selo x antes (GA4) e % de pedidos com retirada."},
+    {"titulo": "Desconto extra no PIX em itens selecionados",
+     "como_funciona": "PIX acima dos 6% padrão só em algumas medidas.",
+     "no_mercado": "A Pneu Store anuncia 'PIX até 18%' na página de ofertas da semana.",
+     "piloto": "PIX de 8% (2 pontos a mais) em 3 medidas muito pesquisadas e pouco vendidas, por 15 dias.",
+     "custo": "2% do valor das vendas dessas 3 medidas no período.",
+     "medir": "Conversão dessas medidas no GA4 durante o teste x antes."},
+    {"titulo": "Condição especial para o jogo de 4 pneus",
+     "como_funciona": "Desconto ou parcelamento maior quando o cliente leva 4 pneus.",
+     "no_mercado": "Kits de 2 e 4 pneus com preço por unidade menor são padrão nos marketplaces.",
+     "piloto": "Na compra de 4 pneus, 10x sem juros (em vez de 6x), por 30 dias.",
+     "custo": "Taxa da operadora nas parcelas 7 a 10, só nos pedidos de 4 pneus.",
+     "medir": "Participação de pedidos com 4 pneus e ticket médio."},
+    {"titulo": "Montagem ou alinhamento grátis",
+     "como_funciona": "Serviço incluso na compra, em loja própria ou oficina parceira.",
+     "no_mercado": "Concorrentes oferecem montagem em parceiros e brindes na compra.",
+     "piloto": "Alinhamento grátis na compra de 4 pneus com retirada na loja, por 30 dias.",
+     "custo": "Custo do serviço por kit vendido.",
+     "medir": "Vendas de kits com retirada e avaliação do cliente."},
+    {"titulo": "Cupom de carrinho abandonado",
+     "como_funciona": "Cupom pequeno enviado só para quem colocou o pneu no carrinho e não comprou.",
+     "no_mercado": "Prática comum em réguas de e-mail de e-commerce.",
+     "piloto": "E-mail automático na Brevo após 24 horas, com 3% de desconto válido por 48 horas.",
+     "custo": "3% só nos carrinhos recuperados.",
+     "medir": "Taxa de recuperação de carrinhos antes x depois."},
+    {"titulo": "Campanha em data comemorativa",
+     "como_funciona": "Ação com prazo curto ligada a uma data (aniversário da loja, Black Friday, Dia dos Pais).",
+     "no_mercado": "A Pneu Store roda campanha de aniversário com 'até 2000 OFF'.",
+     "piloto": "Esquenta da Black Friday só para a base de e-mail, com 1 condição especial por 7 dias.",
+     "custo": "Definido pela condição escolhida, com prazo fechado.",
+     "medir": "Vendas da base de e-mail no período e cadastros novos."},
+    {"titulo": "Sorteio ou prêmio na compra",
+     "como_funciona": "Cada compra vira participação em um sorteio.",
+     "no_mercado": "A Pneu Store faz a 'Rota Premiada' (números da sorte a cada compra).",
+     "piloto": "Sorteio de 1 jogo de pneus entre quem comprar em novembro.",
+     "custo": "Valor do prêmio (fixo e conhecido antes), mais a regularização legal do sorteio.",
+     "medir": "Vendas no período e cadastros na base."},
+]
 
 # ============================================================
 # BLACK FRIDAY
@@ -204,3 +313,30 @@ def alertas_black_friday(hist, dias=30):
             linhas.append({"concorrente": loja, "pneu": pneu, "menor_30d": menor,
                            "atual": atual.iloc[0], "variacao": variacao})
     return pd.DataFrame(linhas, columns=["concorrente", "pneu", "menor_30d", "atual", "variacao"])
+
+
+def montar_email_ideias(ideias, nome, data, link_app, biblioteca=None):
+    """Monta assunto e corpo do e-mail com o resumo das ideias."""
+    linhas = [f"Olá{', ' + nome if nome else ''},", "",
+              f"Segue o resumo das ideias de ação geradas pelo monitor de concorrência (coleta de {data}).", ""]
+    if ideias.empty:
+        linhas.append("Nesta coleta não há ações urgentes: a Roma está competitiva e não há campanhas "
+                      "relevantes dos concorrentes.")
+    for prioridade in ["Alta", "Média", "Baixa"]:
+        bloco = ideias[ideias["prioridade"] == prioridade]
+        if bloco.empty:
+            continue
+        linhas += [f"PRIORIDADE {prioridade.upper()}"]
+        for _, i in bloco.iterrows():
+            linhas += [f"- {i['ideia']} ({i['alavanca']})",
+                       f"  Por quê: {i['motivo']}",
+                       f"  O que fazer: {i['acao']}", ""]
+    if biblioteca:
+        linhas += ["PROPOSTAS DE PILOTO (pequenas, com prazo e custo limitado)"]
+        for b in biblioteca:
+            linhas += [f"- {b['titulo']}", f"  Piloto: {b['piloto']}", f"  Custo: {b['custo']}",
+                       f"  Como medir: {b['medir']}", ""]
+    bf = proxima_black_friday()
+    linhas += [f"Faltam {(bf - date.today()).days} dias para a Black Friday ({bf.strftime('%d/%m/%Y')}).", "",
+               f"Painel completo: {link_app}", "", "Atenciosamente,", "Lucas"]
+    return f"Ideias de ação | Monitor de concorrência | {data}", "\n".join(linhas)

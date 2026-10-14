@@ -1,0 +1,133 @@
+﻿nome;anterior_ecommercePurchases;atual_ecommercePurchases;anterior_newUsers;atual_newUsers;anterior_purchaseRevenue;atual_purchaseRevenue;anterior_sessions;atual_sessions;tipo;dias
+AI Assistant;0.0;0.0;10.0;13.0;0.0;0.0;11.0;15.0;Grupo de canais;7
+Cross-network;0.0;0.0;28.0;14.0;0.0;0.0;31.0;16.0;Grupo de canais;7
+Direct;6.0;0.0;239.0;274.0;0.0;0.0;377.0;371.0;Grupo de canais;7
+Organic Search;10.0;4.0;347.0;410.0;0.0;0.0;615.0;660.0;Grupo de canais;7
+Organic Social;0.0;0.0;10.0;15.0;0.0;0.0;11.0;15.0;Grupo de canais;7
+Paid Search;0.0;0.0;11.0;12.0;0.0;0.0;17.0;15.0;Grupo de canais;7
+Paid Shopping;6.0;4.0;756.0;561.0;0.0;0.0;1019.0;735.0;Grupo de canais;7
+Paid Social;4.0;0.0;224.0;448.0;0.0;0.0;272.0;583.0;Grupo de canais;7
+Referral;0.0;0.0;41.0;42.0;0.0;0.0;70.0;62.0;Grupo de canais;7
+Unassigned;2.0;0.0;1.0;1.0;0.0;0.0;7.0;10.0;Grupo de canais;7
+(data not available);0.0;0.0;20.0;10.0;0.0;0.0;20.0;10.0;Origem;7
+(direct);6.0;0.0;239.0;274.0;0.0;0.0;377.0;371.0;Origem;7
+(not set);2.0;0.0;1.0;1.0;0.0;0.0;7.0;10.0;Origem;7
+alphavilleearredores.com.br;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;7
+avg;0.0;0.0;0.0;1.0;0.0;0.0;0.0;2.0;Origem;7
+bing;0.0;0.0;15.0;19.0;0.0;0.0;18.0;21.0;Origem;7
+br.search.yahoo.com;0.0;0.0;2.0;2.0;0.0;0.0;3.0;2.0;Origem;7
+chatgpt.com;0.0;0.0;9.0;12.0;0.0;0.0;9.0;13.0;Origem;7
+claude.ai;0.0;0.0;1.0;0.0;0.0;0.0;2.0;0.0;Origem;7
+ensun.io;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;7
+facebook.com;0.0;0.0;4.0;1.0;0.0;0.0;4.0;1.0;Origem;7
+gemini.google.com;0.0;0.0;0.0;1.0;0.0;0.0;0.0;2.0;Origem;7
+google;16.0;8.0;1105.0;965.0;0.0;0.0;1626.0;1371.0;Origem;7
+ig;0.0;0.0;1.0;0.0;0.0;0.0;1.0;1.0;Origem;7
+l.facebook.com;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;7
+l.wl.co;0.0;0.0;0.0;6.0;0.0;0.0;3.0;12.0;Origem;7
+linktr.ee;0.0;0.0;14.0;4.0;0.0;0.0;15.0;5.0;Origem;7
+lp.ofertasromapneus.com.br;0.0;0.0;22.0;31.0;0.0;0.0;28.0;38.0;Origem;7
+lucashenrique089.github.io;0.0;0.0;0.0;0.0;0.0;0.0;13.0;1.0;Origem;7
+m.facebook.com;0.0;0.0;4.0;14.0;0.0;0.0;5.0;13.0;Origem;7
+meta;4.0;0.0;224.0;448.0;0.0;0.0;272.0;583.0;Origem;7
+mobispirit.com;0.0;0.0;2.0;1.0;0.0;0.0;2.0;1.0;Origem;7
+search.google.com;0.0;0.0;0.0;0.0;0.0;0.0;18.0;20.0;Origem;7
+trello.com;0.0;0.0;0.0;0.0;0.0;0.0;6.0;5.0;Origem;7
+web.telegram.org;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;7
+(ai-assistant);0.0;0.0;10.0;13.0;0.0;0.0;11.0;15.0;Campanha;7
+(cross-network);0.0;0.0;20.0;10.0;0.0;0.0;20.0;10.0;Campanha;7
+(direct);6.0;0.0;239.0;274.0;0.0;0.0;377.0;371.0;Campanha;7
+(not set);2.0;0.0;2.0;2.0;0.0;0.0;8.0;12.0;Campanha;7
+(organic);10.0;4.0;346.0;411.0;0.0;0.0;595.0;641.0;Campanha;7
+(referral);0.0;0.0;52.0;59.0;0.0;0.0;101.0;98.0;Campanha;7
+03_Fundo_Leads_Promoção;0.0;0.0;0.0;2.0;0.0;0.0;0.0;2.0;Campanha;7
+04_Vendas_Ecomm_Catálogo;4.0;0.0;224.0;446.0;0.0;0.0;272.0;581.0;Campanha;7
+[LOJA Guarulhos] [Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Campanha;7
+[LOJA PATRIARCA] [Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;3.0;0.0;0.0;0.0;4.0;0.0;Campanha;7
+[LOJA TITO] [Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;1.0;0.0;0.0;0.0;1.0;1.0;Campanha;7
+[L][PMAX][VISITAS GG MEU NEGÓCIO];0.0;0.0;8.0;4.0;0.0;0.0;11.0;6.0;Campanha;7
+[Search] [Leads] [LP] - Aros | TESTE WHATSAPP;0.0;0.0;1.0;2.0;0.0;0.0;1.0;2.0;Campanha;7
+[Search] [Leads] [LP] - Institucional;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Campanha;7
+[Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Campanha;7
+[Search] [Leads] [LP] - Serviços;0.0;0.0;2.0;1.0;0.0;0.0;5.0;1.0;Campanha;7
+[Search] [leads] [LP]  - Barato/Promoção/Oferta;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Campanha;7
+[Search] [leads] [LP]  - Compra Online;0.0;0.0;2.0;2.0;0.0;0.0;4.0;4.0;Campanha;7
+[Shopping] [catálogo] - Site E-commerce;6.0;4.0;756.0;561.0;0.0;0.0;1019.0;735.0;Campanha;7
+AI Assistant;0.0;2.0;55.0;47.0;0.0;0.0;68.0;53.0;Grupo de canais;30
+Cross-network;0.0;0.0;75.0;96.0;0.0;0.0;83.0;106.0;Grupo de canais;30
+Direct;18.0;22.0;1319.0;1258.0;0.0;0.0;1774.0;1845.0;Grupo de canais;30
+Organic Search;14.0;28.0;1337.0;1706.0;0.0;0.0;2042.0;2841.0;Grupo de canais;30
+Organic Social;0.0;0.0;52.0;92.0;0.0;0.0;54.0;96.0;Grupo de canais;30
+Paid Search;0.0;0.0;70.0;49.0;0.0;0.0;111.0;68.0;Grupo de canais;30
+Paid Shopping;14.0;24.0;2190.0;3633.0;0.0;0.0;2967.0;4769.0;Grupo de canais;30
+Paid Social;0.0;4.0;0.0;1004.0;0.0;0.0;0.0;1244.0;Grupo de canais;30
+Referral;2.0;0.0;190.0;201.0;0.0;0.0;303.0;289.0;Grupo de canais;30
+Unassigned;0.0;2.0;3.0;4.0;0.0;0.0;50.0;51.0;Grupo de canais;30
+(data not available);0.0;0.0;55.0;78.0;0.0;0.0;56.0;78.0;Origem;30
+(direct);18.0;22.0;1319.0;1258.0;0.0;0.0;1774.0;1845.0;Origem;30
+(not set);0.0;2.0;3.0;4.0;0.0;0.0;50.0;50.0;Origem;30
+alphavilleearredores.com.br;0.0;0.0;1.0;2.0;0.0;0.0;1.0;3.0;Origem;30
+avg;0.0;0.0;0.0;1.0;0.0;0.0;0.0;2.0;Origem;30
+bing;4.0;0.0;50.0;67.0;0.0;0.0;88.0;80.0;Origem;30
+br.search.yahoo.com;0.0;0.0;11.0;10.0;0.0;0.0;12.0;11.0;Origem;30
+cashbe.com.br;2.0;0.0;0.0;0.0;0.0;0.0;22.0;0.0;Origem;30
+chatgpt.com;0.0;2.0;54.0;45.0;0.0;0.0;67.0;49.0;Origem;30
+claude.ai;0.0;0.0;0.0;1.0;0.0;0.0;0.0;2.0;Origem;30
+contatointeligentetake.desk.blip.ai;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;30
+cpxdistribuidorasa.zendesk.com;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;30
+daazcavernas.com;0.0;0.0;0.0;0.0;0.0;0.0;2.0;2.0;Origem;30
+duckduckgo;0.0;0.0;0.0;3.0;0.0;0.0;0.0;3.0;Origem;30
+ecosia.org;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;30
+ensun.io;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Origem;30
+facebook.com;0.0;0.0;37.0;26.0;0.0;0.0;37.0;26.0;Origem;30
+gemini.google.com;0.0;0.0;1.0;1.0;0.0;0.0;1.0;2.0;Origem;30
+google;24.0;52.0;3549.0;5324.0;0.0;0.0;5001.0;7646.0;Origem;30
+ig;0.0;0.0;0.0;1.0;0.0;0.0;1.0;3.0;Origem;30
+insighthubb.com;0.0;0.0;2.0;0.0;0.0;0.0;2.0;0.0;Origem;30
+instagram.com;0.0;0.0;1.0;1.0;0.0;0.0;1.0;1.0;Origem;30
+l.facebook.com;0.0;0.0;4.0;4.0;0.0;0.0;4.0;4.0;Origem;30
+l.instagram.com;0.0;0.0;5.0;2.0;0.0;0.0;6.0;2.0;Origem;30
+l.wl.co;0.0;0.0;18.0;15.0;0.0;0.0;33.0;34.0;Origem;30
+linkedin.com;0.0;0.0;1.0;1.0;0.0;0.0;1.0;1.0;Origem;30
+linktr.ee;0.0;0.0;32.0;37.0;0.0;0.0;33.0;39.0;Origem;30
+lm.facebook.com;0.0;0.0;0.0;0.0;0.0;0.0;0.0;1.0;Origem;30
+lnkd.in;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;30
+lp.ofertasromapneus.com.br;0.0;0.0;124.0;135.0;0.0;0.0;196.0;157.0;Origem;30
+lucashenrique089.github.io;0.0;0.0;8.0;2.0;0.0;0.0;8.0;31.0;Origem;30
+m.facebook.com;0.0;0.0;3.0;57.0;0.0;0.0;3.0;57.0;Origem;30
+manus.im;0.0;0.0;1.0;0.0;0.0;0.0;1.0;0.0;Origem;30
+meta;0.0;4.0;0.0;1004.0;0.0;0.0;0.0;1245.0;Origem;30
+mobispirit.com;0.0;0.0;0.0;3.0;0.0;0.0;0.0;3.0;Origem;30
+ntp.msn.com;0.0;0.0;0.0;0.0;0.0;0.0;8.0;0.0;Origem;30
+om1panel.magehub.com.br;0.0;0.0;0.0;0.0;0.0;0.0;1.0;0.0;Origem;30
+openmultipleurl.com;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Origem;30
+outlook.live.com;0.0;0.0;1.0;0.0;0.0;0.0;2.0;0.0;Origem;30
+search.brave.com;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Origem;30
+search.google.com;0.0;0.0;6.0;0.0;0.0;0.0;36.0;105.0;Origem;30
+toppoptoday.com;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Origem;30
+trello.com;0.0;0.0;0.0;0.0;0.0;0.0;0.0;13.0;Origem;30
+wanderboat.ai;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Origem;30
+waze.com;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Origem;30
+web.telegram.org;0.0;0.0;1.0;1.0;0.0;0.0;1.0;1.0;Origem;30
+yahoo.com;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Origem;30
+(ai-assistant);0.0;2.0;55.0;47.0;0.0;0.0;68.0;53.0;Campanha;30
+(cross-network);0.0;0.0;55.0;78.0;0.0;0.0;56.0;78.0;Campanha;30
+(direct);18.0;22.0;1319.0;1258.0;0.0;0.0;1774.0;1846.0;Campanha;30
+(not set);0.0;2.0;10.0;6.0;0.0;0.0;59.0;54.0;Campanha;30
+(organic);14.0;28.0;1327.0;1703.0;0.0;0.0;2013.0;2732.0;Campanha;30
+(referral);2.0;0.0;259.0;303.0;0.0;0.0;414.0;500.0;Campanha;30
+03_Fundo_Leads_Promoção;0.0;0.0;0.0;2.0;0.0;0.0;0.0;2.0;Campanha;30
+04_Vendas_Ecomm_Catálogo;0.0;4.0;0.0;1002.0;0.0;0.0;0.0;1242.0;Campanha;30
+[LOJA Guarulhos] [Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;0.0;1.0;0.0;0.0;0.0;1.0;Campanha;30
+[LOJA LAPA] [Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;5.0;1.0;0.0;0.0;6.0;1.0;Campanha;30
+[LOJA PATRIARCA] [Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;2.0;5.0;0.0;0.0;2.0;7.0;Campanha;30
+[LOJA TITO] [Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;7.0;3.0;0.0;0.0;7.0;4.0;Campanha;30
+[L][PMAX][VISITAS GG MEU NEGÓCIO];0.0;0.0;20.0;18.0;0.0;0.0;27.0;28.0;Campanha;30
+[Search] [Leads] [LP] - Aros | TESTE WHATSAPP;0.0;0.0;3.0;6.0;0.0;0.0;7.0;7.0;Campanha;30
+[Search] [Leads] [LP] - Institucional;0.0;0.0;6.0;5.0;0.0;0.0;7.0;8.0;Campanha;30
+[Search] [Leads] [LP] - Pneus Goodyear;0.0;0.0;2.0;1.0;0.0;0.0;2.0;1.0;Campanha;30
+[Search] [Leads] [LP] - Serviços;0.0;0.0;0.0;6.0;0.0;0.0;0.0;10.0;Campanha;30
+[Search] [leads] [LP]  - Barato/Promoção/Oferta;0.0;0.0;11.0;2.0;0.0;0.0;16.0;3.0;Campanha;30
+[Search] [leads] [LP]  - Compra Online;0.0;0.0;18.0;9.0;0.0;0.0;25.0;14.0;Campanha;30
+[Shopping] [catálogo] - Site E-commerce;14.0;24.0;2190.0;3633.0;0.0;0.0;2967.0;4769.0;Campanha;30
+[search] [leads] [LP] - Aro 15 e 16;0.0;0.0;2.0;1.0;0.0;0.0;2.0;1.0;Campanha;30

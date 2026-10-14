@@ -1,0 +1,8 @@
+# Chave do robô do GA4: NUNCA vai para o GitHub
+*.json
+chaves/
+.streamlit/secrets.toml
+__pycache__/
+*.zip
+# Excel de vendas original (tem nome de cliente): nunca vai para o GitHub
+Vendas*E-commerce*.xlsx

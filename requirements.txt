@@ -1,6 +1,7 @@
-streamlit
+streamlit>=1.50
 plotly
 pandas
 openpyxl
 curl_cffi
 beautifulsoup4
+google-analytics-data
