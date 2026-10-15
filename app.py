@@ -162,15 +162,16 @@ def estilo_grafico(fig, altura):
 
 
 @st.cache_data
-def carregar_base(_marca_tempo):
-    """Lê a base. O parâmetro muda quando o arquivo é atualizado, o que limpa o cache."""
+def carregar_base(marca_tempo):
+    """Lê a base. O parâmetro (data de modificação do arquivo) muda quando o arquivo é atualizado,
+    o que faz o cache ler de novo. Atenção: parâmetro com "_" na frente é IGNORADO pelo cache do Streamlit."""
     base = pd.read_excel(ARQUIVO_BASE, sheet_name="Base_Consolidada")
     base["pneu"] = base["medida"] + " " + base["modelo"]
     return base
 
 
 @st.cache_data
-def carregar_historico(_marca_tempo):
+def carregar_historico(marca_tempo):
     if not os.path.exists(ARQUIVO_HISTORICO):
         return pd.DataFrame()
     hist = pd.read_csv(ARQUIVO_HISTORICO, sep=";", encoding="utf-8-sig")
@@ -180,7 +181,7 @@ def carregar_historico(_marca_tempo):
 
 
 @st.cache_data
-def carregar_campanhas(_marca):
+def carregar_campanhas(marca):
     atuais = (pd.read_csv(ARQUIVO_CAMPANHAS, sep=";", encoding="utf-8-sig")
               if os.path.exists(ARQUIVO_CAMPANHAS) else pd.DataFrame())
     hist = (pd.read_csv(ARQUIVO_HIST_CAMPANHAS, sep=";", encoding="utf-8-sig")
@@ -554,7 +555,7 @@ marca_parcelas = os.path.getmtime(ARQUIVO_PARCELAS) if os.path.exists(ARQUIVO_PA
 
 
 @st.cache_data
-def carregar_parcelas(_marca):
+def carregar_parcelas(marca):
     if not os.path.exists(ARQUIVO_PARCELAS):
         return pd.DataFrame()
     tab = pd.read_csv(ARQUIVO_PARCELAS, sep=";", encoding="utf-8-sig")
@@ -1092,7 +1093,7 @@ def credencial_ga4():
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
-def ga4_ao_vivo(_momento):
+def ga4_ao_vivo(momento):
     """Consulta o GA4 na hora. Fica guardado até 1 hora (ou até clicar em Atualizar)."""
     dados = ga4.buscar_tudo(credencial_ga4())
     dados["consultado_em"] = pd.Timestamp.now(tz="America/Sao_Paulo")
@@ -1100,7 +1101,7 @@ def ga4_ao_vivo(_momento):
 
 
 @st.cache_data(show_spinner=False)
-def ga4_arquivos(_marca):
+def ga4_arquivos(marca):
     return ga4.ler_arquivos()
 
 
@@ -1146,7 +1147,7 @@ def porcento(valor, casas=1):
 
 # ---------- Vendas faturadas (seu controle) ----------
 @st.cache_data(show_spinner=False)
-def carregar_vendas(_marca):
+def carregar_vendas(marca):
     return vendas_mod.ler_vendas()
 
 
