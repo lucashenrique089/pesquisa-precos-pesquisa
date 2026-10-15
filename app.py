@@ -1598,22 +1598,27 @@ with aba_vendas:
         ads_v = ga4_salvo.get("ads") if ga4_salvo else None
 
         # ---------- Período ----------
-        opcoes_p = ["Um dia", "Últimos 7 dias", "Últimos 30 dias", "Mês atual", "Ano até ontem"]
+        # Os períodos de vendas vão até o ÚLTIMO DIA DA PLANILHA (inclui hoje, se a venda de hoje já foi lançada)
+        fim_v = min(HOJE, max(ONTEM, ultima_venda))
+        rotulo_fim = "hoje" if fim_v == HOJE else "ontem"
+        opcoes_p = ["Um dia", "Últimos 7 dias", "Últimos 30 dias", "Mês atual", f"Ano até {rotulo_fim}"]
         periodo = st.radio("Período", opcoes_p, index=2, horizontal=True, key="vendas_periodo")
         if periodo == "Um dia":
-            ini, ini_ant = escolher_dia("vendas", vendas_df["data"].min(), padrao=min(ONTEM, ultima_venda))
+            ini, ini_ant = escolher_dia("vendas", vendas_df["data"].min(), padrao=min(HOJE, ultima_venda))
             fim, fim_ant = ini, ini_ant
             texto_comp = nome_dia(ini_ant)
         elif periodo.startswith("Últimos"):
-            (ini, fim), (ini_ant, fim_ant) = janela(7 if "7" in periodo else 30)
+            dias_v = 7 if "7" in periodo else 30
+            ini, fim = fim_v - pd.Timedelta(days=dias_v - 1), fim_v
+            ini_ant, fim_ant = ini - pd.Timedelta(days=dias_v), ini - pd.Timedelta(days=1)
             texto_comp = f"{ini_ant:%d/%m} a {fim_ant:%d/%m}"
         elif periodo == "Mês atual":
-            ini, fim = ONTEM.replace(day=1), ONTEM
+            ini, fim = fim_v.replace(day=1), fim_v
             ini_ant = ini - pd.DateOffset(months=1)
             fim_ant = min(ini_ant + (fim - ini), ini - pd.Timedelta(days=1))
             texto_comp = f"mesmos dias do mês anterior ({ini_ant:%d/%m} a {fim_ant:%d/%m})"
         else:
-            ini, fim = ONTEM.replace(month=1, day=1), ONTEM
+            ini, fim = fim_v.replace(month=1, day=1), fim_v
             ini_ant, fim_ant = ini - pd.DateOffset(years=1), fim - pd.DateOffset(years=1)
             texto_comp = "mesmo período do ano passado"
         atual_v, anterior_v = recorte(vendas_df, ini, fim), recorte(vendas_df, ini_ant, fim_ant)
