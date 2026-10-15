@@ -25,12 +25,12 @@ Organic Search;137.0;77.0;2026-09-14;Grupo de canais
 Paid Shopping;133.0;94.0;2026-09-30;Grupo de canais
 Organic Search;130.0;76.0;2026-09-29;Grupo de canais
 Paid Shopping;130.0;96.0;2026-10-13;Grupo de canais
+Unassigned;130.0;1.0;2026-10-15;Grupo de canais
 Paid Shopping;128.0;103.0;2026-09-27;Grupo de canais
 Organic Search;128.0;73.0;2026-10-09;Grupo de canais
 Paid Shopping;123.0;91.0;2026-10-03;Grupo de canais
 Organic Search;122.0;72.0;2026-10-05;Grupo de canais
 Organic Search;121.0;71.0;2026-10-06;Grupo de canais
-Unassigned;119.0;1.0;2026-10-15;Grupo de canais
 Organic Search;118.0;64.0;2026-09-23;Grupo de canais
 Organic Search;116.0;59.0;2026-09-16;Grupo de canais
 Organic Search;116.0;74.0;2026-09-21;Grupo de canais
@@ -88,6 +88,7 @@ Paid Social;61.0;46.0;2026-10-09;Grupo de canais
 Direct;60.0;35.0;2026-10-13;Grupo de canais
 Organic Search;58.0;41.0;2026-09-19;Grupo de canais
 Direct;58.0;40.0;2026-09-30;Grupo de canais
+Cross-network;56.0;55.0;2026-10-15;Grupo de canais
 Direct;55.0;34.0;2026-10-05;Grupo de canais
 Direct;54.0;24.0;2026-09-22;Grupo de canais
 Direct;54.0;36.0;2026-10-08;Grupo de canais
@@ -95,7 +96,6 @@ Organic Search;53.0;38.0;2026-09-12;Grupo de canais
 Paid Social;53.0;43.0;2026-10-06;Grupo de canais
 Direct;50.0;25.0;2026-09-23;Grupo de canais
 Direct;49.0;47.0;2026-10-12;Grupo de canais
-Cross-network;49.0;48.0;2026-10-15;Grupo de canais
 Direct;48.0;18.0;2026-09-17;Grupo de canais
 Paid Social;48.0;39.0;2026-10-04;Grupo de canais
 Direct;46.0;32.0;2026-10-03;Grupo de canais
@@ -125,11 +125,11 @@ Organic Search;30.0;27.0;2026-10-11;Grupo de canais
 Organic Social;29.0;29.0;2026-09-18;Grupo de canais
 Paid Social;29.0;23.0;2026-09-24;Grupo de canais
 Organic Search;29.0;22.0;2026-09-27;Grupo de canais
+Direct;29.0;19.0;2026-10-15;Grupo de canais
 Paid Social;28.0;28.0;2026-09-20;Grupo de canais
 Paid Social;28.0;21.0;2026-09-23;Grupo de canais
 Paid Social;27.0;19.0;2026-09-26;Grupo de canais
 Paid Social;27.0;21.0;2026-10-02;Grupo de canais
-Direct;27.0;18.0;2026-10-15;Grupo de canais
 Paid Social;24.0;22.0;2026-09-25;Grupo de canais
 Direct;23.0;16.0;2026-10-04;Grupo de canais
 Organic Search;23.0;16.0;2026-10-04;Grupo de canais
@@ -146,12 +146,12 @@ Paid Social;15.0;12.0;2026-09-30;Grupo de canais
 Referral;15.0;9.0;2026-10-13;Grupo de canais
 Referral;14.0;10.0;2026-09-16;Grupo de canais
 Referral;14.0;13.0;2026-09-22;Grupo de canais
+Organic Search;14.0;2.0;2026-10-15;Grupo de canais
 Referral;13.0;9.0;2026-09-10;Grupo de canais
 Referral;13.0;10.0;2026-10-08;Grupo de canais
 Unassigned;12.0;1.0;2026-09-12;Grupo de canais
 Unassigned;12.0;0.0;2026-09-15;Grupo de canais
 Referral;12.0;4.0;2026-10-01;Grupo de canais
-Organic Search;12.0;1.0;2026-10-15;Grupo de canais
 Referral;11.0;11.0;2026-09-23;Grupo de canais
 Referral;11.0;9.0;2026-09-25;Grupo de canais
 Referral;11.0;5.0;2026-09-28;Grupo de canais
@@ -273,6 +273,7 @@ AI Assistant;2.0;2.0;2026-10-14;Grupo de canais
 Cross-network;2.0;1.0;2026-10-14;Grupo de canais
 Organic Social;2.0;3.0;2026-10-14;Grupo de canais
 Paid Search;2.0;2.0;2026-10-14;Grupo de canais
+Paid Search;2.0;2.0;2026-10-15;Grupo de canais
 Cross-network;1.0;1.0;2026-09-10;Grupo de canais
 Organic Social;1.0;1.0;2026-09-12;Grupo de canais
 Referral;1.0;1.0;2026-09-13;Grupo de canais
@@ -316,7 +317,6 @@ Referral;1.0;1.0;2026-10-11;Grupo de canais
 Paid Search;1.0;0.0;2026-10-13;Grupo de canais
 Unassigned;1.0;0.0;2026-10-14;Grupo de canais
 Organic Social;1.0;1.0;2026-10-15;Grupo de canais
-Paid Search;1.0;1.0;2026-10-15;Grupo de canais
 Referral;1.0;0.0;2026-10-15;Grupo de canais
 google;385.0;288.0;2026-09-14;Origem
 google;371.0;266.0;2026-09-16;Origem
@@ -352,7 +352,7 @@ google;156.0;124.0;2026-09-27;Origem
 google;144.0;113.0;2026-09-26;Origem
 google;137.0;94.0;2026-09-12;Origem
 google;130.0;94.0;2026-10-12;Origem
-(not set);119.0;1.0;2026-10-15;Origem
+(not set);130.0;1.0;2026-10-15;Origem
 meta;112.0;90.0;2026-10-11;Origem
 google;107.0;79.0;2026-10-04;Origem
 meta;107.0;90.0;2026-10-10;Origem
@@ -380,19 +380,19 @@ meta;62.0;51.0;2026-10-08;Origem
 meta;61.0;46.0;2026-10-09;Origem
 (direct);60.0;35.0;2026-10-13;Origem
 (direct);58.0;40.0;2026-09-30;Origem
+(data not available);56.0;55.0;2026-10-15;Origem
 (direct);55.0;34.0;2026-10-05;Origem
 (direct);54.0;24.0;2026-09-22;Origem
 (direct);54.0;36.0;2026-10-08;Origem
 meta;53.0;43.0;2026-10-06;Origem
 (direct);50.0;25.0;2026-09-23;Origem
 (direct);49.0;47.0;2026-10-12;Origem
-(data not available);49.0;48.0;2026-10-15;Origem
 (direct);48.0;18.0;2026-09-17;Origem
 meta;48.0;39.0;2026-10-04;Origem
+google;47.0;22.0;2026-10-15;Origem
 (direct);46.0;32.0;2026-10-03;Origem
 (direct);45.0;32.0;2026-09-18;Origem
 (direct);44.0;30.0;2026-09-26;Origem
-google;44.0;20.0;2026-10-15;Origem
 meta;43.0;35.0;2026-10-03;Origem
 (direct);43.0;35.0;2026-10-10;Origem
 (direct);41.0;24.0;2026-09-11;Origem
@@ -409,11 +409,11 @@ meta;32.0;26.0;2026-09-29;Origem
 (direct);31.0;23.0;2026-09-27;Origem
 meta;31.0;23.0;2026-09-28;Origem
 meta;29.0;23.0;2026-09-24;Origem
+(direct);29.0;19.0;2026-10-15;Origem
 meta;28.0;28.0;2026-09-20;Origem
 meta;28.0;21.0;2026-09-23;Origem
 meta;27.0;19.0;2026-09-26;Origem
 meta;27.0;21.0;2026-10-02;Origem
-(direct);27.0;18.0;2026-10-15;Origem
 meta;24.0;22.0;2026-09-25;Origem
 (direct);23.0;16.0;2026-10-04;Origem
 m.facebook.com;22.0;22.0;2026-09-18;Origem
@@ -755,12 +755,12 @@ l.wl.co;1.0;0.0;2026-10-15;Origem
 (organic);133.0;77.0;2026-10-13;Campanha
 (organic);131.0;77.0;2026-09-14;Campanha
 [Shopping] [catálogo] - Site E-commerce;130.0;96.0;2026-10-13;Campanha
+(not set);130.0;1.0;2026-10-15;Campanha
 [Shopping] [catálogo] - Site E-commerce;128.0;103.0;2026-09-27;Campanha
 (organic);124.0;76.0;2026-09-29;Campanha
 [Shopping] [catálogo] - Site E-commerce;123.0;91.0;2026-10-03;Campanha
 (organic);123.0;73.0;2026-10-09;Campanha
 (organic);120.0;71.0;2026-10-06;Campanha
-(not set);119.0;1.0;2026-10-15;Campanha
 (organic);117.0;71.0;2026-10-05;Campanha
 (organic);112.0;65.0;2026-09-23;Campanha
 (organic);112.0;71.0;2026-09-25;Campanha
@@ -819,6 +819,7 @@ l.wl.co;1.0;0.0;2026-10-15;Origem
 (organic);59.0;42.0;2026-09-19;Campanha
 04_Vendas_Ecomm_Catálogo;59.0;44.0;2026-10-09;Campanha
 (direct);58.0;40.0;2026-09-30;Campanha
+(cross-network);56.0;55.0;2026-10-15;Campanha
 (direct);55.0;34.0;2026-10-05;Campanha
 (organic);54.0;38.0;2026-09-12;Campanha
 (direct);54.0;24.0;2026-09-22;Campanha
@@ -826,7 +827,6 @@ l.wl.co;1.0;0.0;2026-10-15;Origem
 (referral);53.0;42.0;2026-09-18;Campanha
 04_Vendas_Ecomm_Catálogo;53.0;43.0;2026-10-06;Campanha
 (direct);50.0;25.0;2026-09-23;Campanha
-(cross-network);50.0;49.0;2026-10-15;Campanha
 (direct);49.0;47.0;2026-10-12;Campanha
 (direct);48.0;18.0;2026-09-17;Campanha
 04_Vendas_Ecomm_Catálogo;48.0;39.0;2026-10-04;Campanha
@@ -857,11 +857,11 @@ l.wl.co;1.0;0.0;2026-10-15;Origem
 04_Vendas_Ecomm_Catálogo;30.0;23.0;2026-09-28;Campanha
 04_Vendas_Ecomm_Catálogo;29.0;23.0;2026-09-24;Campanha
 (organic);29.0;22.0;2026-09-27;Campanha
+(direct);29.0;19.0;2026-10-15;Campanha
 04_Vendas_Ecomm_Catálogo;28.0;28.0;2026-09-20;Campanha
 04_Vendas_Ecomm_Catálogo;28.0;21.0;2026-09-23;Campanha
 04_Vendas_Ecomm_Catálogo;27.0;19.0;2026-09-26;Campanha
 04_Vendas_Ecomm_Catálogo;27.0;21.0;2026-10-02;Campanha
-(direct);27.0;18.0;2026-10-15;Campanha
 (referral);26.0;18.0;2026-09-11;Campanha
 (referral);25.0;13.0;2026-09-16;Campanha
 (referral);25.0;13.0;2026-09-21;Campanha
@@ -892,9 +892,9 @@ l.wl.co;1.0;0.0;2026-10-15;Origem
 (referral);13.0;7.0;2026-10-07;Campanha
 (not set);12.0;0.0;2026-09-15;Campanha
 (referral);12.0;5.0;2026-10-09;Campanha
+(organic);12.0;2.0;2026-10-15;Campanha
 (referral);10.0;3.0;2026-10-02;Campanha
 (referral);10.0;8.0;2026-10-10;Campanha
-(organic);10.0;1.0;2026-10-15;Campanha
 (referral);9.0;7.0;2026-09-26;Campanha
 (referral);7.0;6.0;2026-10-03;Campanha
 04_Vendas_Ecomm_Catálogo;7.0;1.0;2026-10-15;Campanha
@@ -1063,4 +1063,5 @@ l.wl.co;1.0;0.0;2026-10-15;Origem
 (cross-network);1.0;1.0;2026-10-14;Campanha
 (not set);1.0;0.0;2026-10-14;Campanha
 [L][PMAX][VISITAS GG MEU NEGÓCIO];1.0;0.0;2026-10-14;Campanha
+[Search] [Leads] [LP] - Institucional;1.0;1.0;2026-10-15;Campanha
 [Search] [leads] [LP]  - Barato/Promoção/Oferta;1.0;1.0;2026-10-15;Campanha
