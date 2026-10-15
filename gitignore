@@ -6,3 +6,5 @@ __pycache__/
 *.zip
 # Excel de vendas original (tem nome de cliente): nunca vai para o GitHub
 Vendas*E-commerce*.xlsx
+# Texto gerado para o Secrets do Streamlit (tem a chave do GA4)
+secrets_streamlit.toml

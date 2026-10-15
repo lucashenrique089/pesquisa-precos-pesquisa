@@ -89,6 +89,12 @@ button[data-baseweb="tab"][aria-selected="true"] p {{ color: {COR_ROMA}; }}
 [data-testid="stMetricValue"] {{ color: #111; font-weight: 800; font-size: 1.45rem !important; line-height: 1.25; }}
 [data-testid="stMetricValue"] > div {{ overflow: visible !important; text-overflow: clip !important; }}
 [data-testid="stMetricDelta"] {{ font-size: .78rem !important; }}
+[data-testid="stMetricValue"] > div {{ white-space: normal !important; word-break: break-word; }}
+.cartao-multi {{ background: #FFFFFF; border: 1px solid #E6E8EB; border-top: 3px solid {COR_ROMA};
+                border-radius: 10px; padding: .55rem .8rem .6rem; height: 100%; }}
+.cartao-rotulo {{ color: #3C4043; font-weight: 700; font-size: .8rem; margin-bottom: .25rem; }}
+.cartao-valor {{ color: #111; font-weight: 700; font-size: 1.02rem; line-height: 1.45; }}
+.cartao-valor b {{ font-weight: 800; }}
 
 /* Cabeçalho com as logos */
 .cabecalho {{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
@@ -115,6 +121,14 @@ def imagem_base64(caminho):
         dados = base64.b64encode(arquivo.read()).decode()
     tipo = {"jpg": "jpeg", "jpeg": "jpeg", "svg": "svg+xml"}.get(caminho.rsplit(".", 1)[-1].lower(), "png")
     return f"data:image/{tipo};base64,{dados}"
+
+
+def cartao_html(coluna, rotulo, linhas):
+    """Cartão com várias linhas (um valor por linha), no mesmo visual dos números do painel.
+    Usado quando um st.metric não cabe: o texto quebra a linha em vez de sair da caixa."""
+    corpo = "<br>".join(str(l).replace("$", "&#36;") for l in linhas) or "—"
+    coluna.markdown(f'<div class="cartao-multi"><div class="cartao-rotulo">{rotulo}</div>'
+                    f'<div class="cartao-valor">{corpo}</div></div>', unsafe_allow_html=True)
 
 
 def formatar_real(valor):
@@ -998,11 +1012,11 @@ with aba_parcelas:
                       help="Negativo = o cliente paga menos na Roma no total.")
         else:
             m1.metric(f"Roma em {n_parc}x", "Não oferece", help="A Roma parcela em até 6x.")
-            m2.metric("Lojas que oferecem", ", ".join(l for l in concs_p if totais[l].notna().any()) or "—")
+            cartao_html(m2, "Lojas que oferecem", [l for l in concs_p if totais[l].notna().any()])
         parcela_media = parcelas_v.mean()
-        m3.metric(f"Parcela média ({qtd} pneu{'s' if qtd > 1 else ''})",
-                  " | ".join(f"{l}: {formatar_real(parcela_media[l])}" for l in lojas_p
-                             if pd.notna(parcela_media.get(l))) or "—")
+        cartao_html(m3, f"Parcela média ({qtd} pneu{'s' if qtd > 1 else ''})",
+                    [f"<b>{l}:</b> {formatar_real(parcela_media[l])}" for l in lojas_p
+                     if pd.notna(parcela_media.get(l))])
 
         st.subheader(f"Comparativo em {n_parc}x · {qtd} pneu{'s' if qtd > 1 else ''}")
         tabela_p = pd.DataFrame({"Pneu": ordem_p})
@@ -1077,14 +1091,43 @@ def credencial_ga4():
     return None
 
 
-@st.cache_data(ttl=900, show_spinner=False)
+@st.cache_data(ttl=3600, show_spinner=False)
 def ga4_ao_vivo(_momento):
-    return ga4.buscar_tudo(credencial_ga4())
+    """Consulta o GA4 na hora. Fica guardado até 1 hora (ou até clicar em Atualizar)."""
+    dados = ga4.buscar_tudo(credencial_ga4())
+    dados["consultado_em"] = pd.Timestamp.now(tz="America/Sao_Paulo")
+    return dados
 
 
 @st.cache_data(show_spinner=False)
 def ga4_arquivos(_marca):
     return ga4.ler_arquivos()
+
+
+# Há acesso direto ao GA4? Na nuvem: chave no Secrets. No computador: arquivo em C:\chaves
+TEM_ACESSO_GA4 = credencial_ga4() is not None or os.path.exists(ga4.CHAVE)
+
+
+def carregar_ga4():
+    """Devolve (dados, texto da origem, aviso).
+    Com acesso ao GA4: consulta AO VIVO e renova sozinho a cada hora, sem precisar rodar o coletor.
+    Sem acesso: usa os arquivos ga4_*.csv da última coleta."""
+    aviso = None
+    if TEM_ACESSO_GA4:
+        momento = st.session_state.get("ga4_vivo") or pd.Timestamp.now().floor("1h")
+        try:
+            with st.spinner("Consultando o GA4..."):
+                dados = ga4_ao_vivo(momento)
+            return dados, f"Ao vivo pelo GA4 · consultado às {dados['consultado_em']:%H:%M} (renova a cada hora)", None
+        except Exception as erro:
+            aviso = f"Não foi possível consultar o GA4 agora ({str(erro)[:150]}). Mostrando os dados da última coleta."
+    marca = os.path.getmtime(ga4.ARQ_DIARIO) if os.path.exists(ga4.ARQ_DIARIO) else 0
+    dados = ga4_arquivos(marca)
+    origem = ""
+    if dados is not None:
+        origem = ("Dados da última coleta · " + pd.Timestamp(marca, unit="s", tz="UTC")
+                  .tz_convert("America/Sao_Paulo").strftime("%d/%m/%Y %H:%M"))
+    return dados, origem, aviso
 
 
 def variacao(atual, anterior):
@@ -1168,26 +1211,13 @@ with aba_site:
                 "funil de cada pneu, cruzado com a posição de preço.**")
 
     c_botao, c_info = st.columns([1, 3])
-    if c_botao.button("🔄 Atualizar GA4 agora", key="ga4_agora",
-                      help="Consulta o GA4 neste momento (os dados ficam guardados por 15 minutos)."):
-        st.session_state["ga4_vivo"] = pd.Timestamp.now().floor("15min")
-
-    dados_ga4, origem_ga4 = None, ""
-    if "ga4_vivo" in st.session_state:
-        try:
-            with st.spinner("Consultando o GA4..."):
-                dados_ga4 = ga4_ao_vivo(st.session_state["ga4_vivo"])
-            origem_ga4 = f"Ao vivo · consultado às {pd.Timestamp.now().strftime('%H:%M')}"
-        except Exception as erro:
-            st.warning(f"Não foi possível consultar o GA4 agora ({str(erro)[:150]}). "
-                       "Mostrando os dados da última coleta.")
-    if dados_ga4 is None:
-        marca_ga4 = os.path.getmtime(ga4.ARQ_DIARIO) if os.path.exists(ga4.ARQ_DIARIO) else 0
-        dados_ga4 = ga4_arquivos(marca_ga4)
-        if dados_ga4 is not None:
-            origem_ga4 = ("Dados da última coleta · " +
-                          pd.Timestamp(marca_ga4, unit="s", tz="UTC").tz_convert("America/Sao_Paulo")
-                          .strftime("%d/%m/%Y %H:%M"))
+    if TEM_ACESSO_GA4:
+        if c_botao.button("🔄 Atualizar GA4 agora", key="ga4_agora",
+                          help="Busca os números do GA4 e do Google Ads neste minuto."):
+            st.session_state["ga4_vivo"] = pd.Timestamp.now()
+    dados_ga4, origem_ga4, aviso_ga4 = carregar_ga4()
+    if aviso_ga4:
+        st.warning(aviso_ga4)
     c_info.caption(origem_ga4)
 
     if dados_ga4 is None:
@@ -1564,8 +1594,7 @@ with aba_vendas:
         st.caption(f"Vendas até {ultima_venda:%d/%m/%Y} (última data na planilha).{aviso_atraso}")
 
         # Dados do GA4 (arquivos da última coleta) para sessões e Google Ads
-        marca_g = os.path.getmtime(ga4.ARQ_DIARIO) if os.path.exists(ga4.ARQ_DIARIO) else 0
-        ga4_salvo = ga4_arquivos(marca_g)
+        ga4_salvo, _, _ = carregar_ga4()
         ads_v = ga4_salvo.get("ads") if ga4_salvo else None
 
         # ---------- Período ----------
