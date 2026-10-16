@@ -1,13 +1,4 @@
 ﻿data;campanha;tipo_campanha;custo;cliques;impressoes
-2025-09-10;[L] [PMAX Geral];Performance Max;50.541022;28.0;1067.0
-2025-09-10;[L][PMAX][VISITAS GG MEU NEGÓCIO];Performance Max;29.427563;35.0;22012.0
-2025-09-10;[Search] [Leads] [LP] - Aros | TESTE WHATSAPP;Search;86.530625;15.0;382.0
-2025-09-10;[Search] [Leads] [LP] - Institucional;Search;88.240434;34.0;99.0
-2025-09-10;[Search] [Leads] [LP] - Pneus Goodyear;Search;152.157016;30.0;292.0
-2025-09-10;[Search] [leads] [LP]  - Compra Online;Search;74.810517;14.0;409.0
-2025-09-10;[Search] [leads] [LP] - Campanha Lojas;Search;48.121098;16.0;48.0
-2025-09-10;[VENDAS] [PMAX GERAL]  [Goodyear];Performance Max;46.386353;54.0;1422.0
-2025-09-10;[search] [leads] [LP] - Aro 15 e 16;Search;23.52;8.0;228.0
 2025-09-11;[L] [PMAX Geral];Performance Max;9.816646;12.0;434.0
 2025-09-11;[L][PMAX][VISITAS GG MEU NEGÓCIO];Performance Max;19.6866;49.0;25662.0
 2025-09-11;[Search] [Leads] [LP] - Aros | TESTE WHATSAPP;Search;63.972977;13.0;333.0
@@ -3719,7 +3710,7 @@
 2026-10-03;[Search] [leads] [LP]  - Barato/Promoção/Oferta;Search;76.470757;24.0;454.0
 2026-10-03;[Search] [leads] [LP]  - Compra Online;Search;115.400047;32.0;542.0
 2026-10-03;[Search] [leads] [LP] - Campanha Lojas;Search;97.810601;23.0;149.0
-2026-10-03;[Shopping] [catálogo] - Site E-commerce;Shopping;75.22;155.0;6495.0
+2026-10-03;[Shopping] [catálogo] - Site E-commerce;Shopping;75.22;155.0;6490.0
 2026-10-03;[search] [leads] [LP] - Aro 15 e 16;Search;77.000323;28.0;337.0
 2026-10-04;[Shopping] [catálogo] - Site E-commerce;Shopping;49.44;105.0;4379.0
 2026-10-05;[LOJA Guarulhos] [Search] [Leads] [LP] - Pneus Goodyear;Search;63.926498;15.0;282.0
@@ -3786,7 +3777,7 @@
 2026-10-09;[Search] [leads] [LP]  - Barato/Promoção/Oferta;Search;72.496435;14.0;308.0
 2026-10-09;[Search] [leads] [LP]  - Compra Online;Search;114.84788;25.0;394.0
 2026-10-09;[Search] [leads] [LP] - Campanha Lojas;Search;68.365262;13.0;138.0
-2026-10-09;[Shopping] [catálogo] - Site E-commerce;Shopping;41.11;103.0;5026.0
+2026-10-09;[Shopping] [catálogo] - Site E-commerce;Shopping;41.11;103.0;5017.0
 2026-10-09;[search] [leads] [LP] - Aro 15 e 16;Search;69.766044;21.0;718.0
 2026-10-10;[LOJA Guarulhos] [Search] [Leads] [LP] - Pneus Goodyear;Search;67.942208;19.0;330.0
 2026-10-10;[LOJA LAPA] [Search] [Leads] [LP] - Pneus Goodyear;Search;78.428137;18.0;398.0
@@ -3821,7 +3812,7 @@
 2026-10-13;[L][PMAX][VISITAS GG MEU NEGÓCIO];Performance Max;70.812016;39.0;32666.0
 2026-10-13;[Search] [Leads] [LP] - Aros | TESTE WHATSAPP;Search;140.986642;72.0;1379.0
 2026-10-13;[Search] [Leads] [LP] - Institucional;Search;290.054089;77.0;247.0
-2026-10-13;[Search] [Leads] [LP] - Pneus Goodyear;Search;228.730066;74.0;1377.0
+2026-10-13;[Search] [Leads] [LP] - Pneus Goodyear;Search;228.730066;74.0;1376.0
 2026-10-13;[Search] [Leads] [LP] - Serviços;Search;109.986871;47.0;1127.0
 2026-10-13;[Search] [leads] [LP]  - Barato/Promoção/Oferta;Search;84.940987;16.0;230.0
 2026-10-13;[Search] [leads] [LP]  - Compra Online;Search;114.789646;24.0;462.0
@@ -3841,3 +3832,16 @@
 2026-10-14;[Search] [leads] [LP] - Campanha Lojas;Search;71.696595;7.0;46.0
 2026-10-14;[Shopping] [catálogo] - Site E-commerce;Shopping;64.91;163.0;6398.0
 2026-10-14;[search] [leads] [LP] - Aro 15 e 16;Search;81.518654;27.0;693.0
+2026-10-15;[LOJA Guarulhos] [Search] [Leads] [LP] - Pneus Goodyear;Search;58.470643;13.0;238.0
+2026-10-15;[LOJA LAPA] [Search] [Leads] [LP] - Pneus Goodyear;Search;53.248329;11.0;187.0
+2026-10-15;[LOJA PATRIARCA] [Search] [Leads] [LP] - Pneus Goodyear;Search;64.780561;20.0;295.0
+2026-10-15;[L][PMAX][VISITAS GG MEU NEGÓCIO];Performance Max;75.367347;27.0;23051.0
+2026-10-15;[Search] [Leads] [LP] - Aros | TESTE WHATSAPP;Search;73.58241;37.0;768.0
+2026-10-15;[Search] [Leads] [LP] - Institucional;Search;182.537808;21.0;315.0
+2026-10-15;[Search] [Leads] [LP] - Pneus Goodyear;Search;258.934365;83.0;1284.0
+2026-10-15;[Search] [Leads] [LP] - Serviços;Search;54.848982;15.0;148.0
+2026-10-15;[Search] [leads] [LP]  - Barato/Promoção/Oferta;Search;67.927476;17.0;243.0
+2026-10-15;[Search] [leads] [LP]  - Compra Online;Search;110.955113;29.0;533.0
+2026-10-15;[Search] [leads] [LP] - Campanha Lojas;Search;76.410764;5.0;69.0
+2026-10-15;[Shopping] [catálogo] - Site E-commerce;Shopping;52.39;137.0;5418.0
+2026-10-15;[search] [leads] [LP] - Aro 15 e 16;Search;44.113045;15.0;639.0
